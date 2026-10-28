@@ -27,13 +27,19 @@ class ParenthesesValidator(logLevel: LogLevel, format: String) {
         val stack = Stack<Char>()
         var errorMsg = ""
         
+        var i=-1
         for(c in str){
+            i++
             if(c =='('){
                 logger.trace("Found '('")
                 stack.push(c)
             }
+            
             else if(c == ')'){
                 if(stack.isEmpty()){
+                    println(str)
+                    print(" ".repeat(i))
+                    println("^")
                     errorMsg = "Found ')' but theres no matching '('"
                     logger.warn(errorMsg)
                     break
