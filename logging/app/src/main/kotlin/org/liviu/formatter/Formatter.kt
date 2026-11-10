@@ -36,6 +36,9 @@ class Formatter(format: String) {
         Companion.format = format
     }
     
+    constructor() : this(Companion.format) {
+    }
+    
     public fun formatMessage(name: String, logLevel: LogLevel, message: String): String{
         val time = LocalTime.now().format(TIME_FORMAT)
         val randomMessage = RANDOM_MESSAGES.getValue(logLevel).random()

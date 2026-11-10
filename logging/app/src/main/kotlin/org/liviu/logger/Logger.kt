@@ -14,7 +14,7 @@ enum class LogLevel {
 
 class Logger(private val name: String, private val formatter: Formatter, private val sink: Sink) {
 
-    constructor(name: String): this(name, Formatter(Formatter.format), ConsoleSink()) {
+    constructor(name: String): this(name, Formatter(), ConsoleSink()) {
     }
         
     companion object {
