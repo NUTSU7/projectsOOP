@@ -20,7 +20,7 @@ class Logger(private val name: String, private val formatter: Formatter) {
     companion object {
         private var level = LogLevel.INFO
         
-        fun setLevel(newLevel: LogLevel) {
+        public fun setLevel(newLevel: LogLevel) {
             level = newLevel
         }
     }
