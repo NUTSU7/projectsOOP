@@ -2,7 +2,7 @@ package org.liviu.logger
 
 import kotlin.random.Random
 import kotlin.random.nextInt
-import org.liviu.consolesink.ConsoleSink
+import org.liviu.sink.*
 import org.liviu.formatter.Formatter
 
 
@@ -12,9 +12,9 @@ enum class LogLevel {
 
 
 
-class Logger(private val name: String, private val formatter: Formatter) {
+class Logger(private val name: String, private val formatter: Formatter, private val sink: Sink) {
 
-    constructor(name: String): this(name, Formatter(Formatter.format)) {
+    constructor(name: String): this(name, Formatter(Formatter.format), ConsoleSink()) {
     }
         
     companion object {
@@ -34,7 +34,7 @@ class Logger(private val name: String, private val formatter: Formatter) {
     private fun log(msgLevel: LogLevel, message: String){
         if (msgLevel.ordinal < level.ordinal) return
         
-        ConsoleSink.write(formatter.formatMessage(name, msgLevel, message))
+        sink.write(formatter.formatMessage(name, msgLevel, message))
     }
     
 }
