@@ -1,6 +1,6 @@
 package org.liviu.consolesink
 
-class ConsoleSink {
+object ConsoleSink {
     fun write(message: String) {
         println(message)
     }
