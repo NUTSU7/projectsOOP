@@ -1,6 +1,6 @@
-package org.parenthesesvalidator
+package org.liviu.parenthesesvalidator
 import java.util.Stack
-import org.logger.*
+import org.liviu.logger.*
 
 class ParenthesesValidator(logLevel: LogLevel, format: String) {
     

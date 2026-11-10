@@ -1,4 +1,4 @@
-package org.logger
+package org.liviu.logger
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import kotlin.random.Random
