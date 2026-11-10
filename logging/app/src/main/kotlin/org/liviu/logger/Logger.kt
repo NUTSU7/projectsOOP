@@ -26,15 +26,15 @@ class Logger(private val name: String, private val formatter: Formatter, private
     }
     
 
-    public fun trace(message: String) = log(LogLevel.TRACE, message)
-    public fun info(message: String) = log(LogLevel.INFO, message)
-    public fun warn(message: String) = log(LogLevel.WARN, message)
-    public fun error(message: String) = log(LogLevel.ERROR, message)
-    
-    private fun log(msgLevel: LogLevel, message: String, args: Array<out Any>? = null) {
+    public fun trace(message: String, vararg args: Any) = log(LogLevel.TRACE, message, args)
+    public fun info(message: String, vararg args: Any) = log(LogLevel.INFO, message, args)
+    public fun warn(message: String, vararg args: Any) = log(LogLevel.WARN, message, args)
+    public fun error(message: String, vararg args: Any) = log(LogLevel.ERROR, message, args)
+
+    private fun log(msgLevel: LogLevel, message: String, args: Array<out Any>) {
         if (msgLevel.ordinal < level.ordinal) return
         
-        sink.write(formatter.formatMessage(name, msgLevel, message))
+        sink.write(formatter.formatMessage(name, msgLevel, message, args))
     }
     
 }

@@ -39,7 +39,7 @@ class Formatter(format: String) {
     constructor() : this(Companion.format) {
     }
     
-    public fun formatMessage(name: String, logLevel: LogLevel, message: String, args: Array<out Any>? = null): String{
+    public fun formatMessage(name: String, logLevel: LogLevel, message: String, args: Array<out Any>): String{
         val time = LocalTime.now().format(TIME_FORMAT)
         val randomMessage = RANDOM_MESSAGES.getValue(logLevel).random()
         
@@ -48,7 +48,7 @@ class Formatter(format: String) {
         return format.replace("%t", time)
             .replace("%l", logLevel.name)
             .replace("%n", name)
-            .replace("%m", message)
+            .replace("%m", msg)
             .replace("%r", randomMessage)
     }
 

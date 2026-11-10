@@ -39,8 +39,8 @@ class ParenthesesValidator(logLevel: LogLevel, format: String) {
                     println(str)
                     print(" ".repeat(i))
                     println("^")
-                    errorMsg = "Found ')' but theres no matching '('"
-                    logger.warn(errorMsg)
+                    errorMsg = "Found ')' % % % % but theres no matching '(' at index %"
+                    logger.warn(errorMsg, 1,2,3,4,i)
                     break
                     //return false
                 } 
