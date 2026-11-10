@@ -10,7 +10,7 @@ class ParenthesesValidator(logLevel: LogLevel, format: String) {
     
     init {
         logger.setLevel(logLevel)
-        if(format.isNotEmpty()) logger.setFormat(format)
+        //if(format.isNotEmpty()) logger.setFormat(format)
     }
     
     

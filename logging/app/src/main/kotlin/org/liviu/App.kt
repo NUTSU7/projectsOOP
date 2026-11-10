@@ -4,6 +4,7 @@
 package org.liviu
 import org.liviu.logger.*
 import org.liviu.parenthesesvalidator.ParenthesesValidator
+import org.liviu.formatter.Formatter
 
 class App {
     val greeting: String
@@ -20,6 +21,7 @@ fun main() {
     //logger.warn("warning message")
     //logger.error("error message")
     
+    /*
     
     println("Which option to test?")
     println("1. ()")
@@ -56,4 +58,9 @@ fun main() {
     }
     
     val isValid = parenthesesValidator.isValid(testString)
+    */
+    
+    val formatter = Formatter("[%t] [%l] %n: %m, %r")
+    
+    println(formatter.formatMessage("App", LogLevel.INFO, "This is an info message%n"))
 }
