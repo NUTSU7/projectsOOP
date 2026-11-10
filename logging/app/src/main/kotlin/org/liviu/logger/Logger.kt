@@ -31,7 +31,7 @@ class Logger(private val name: String, private val formatter: Formatter, private
     public fun warn(message: String) = log(LogLevel.WARN, message)
     public fun error(message: String) = log(LogLevel.ERROR, message)
     
-    private fun log(msgLevel: LogLevel, message: String){
+    private fun log(msgLevel: LogLevel, message: String, args: Array<out Any>? = null) {
         if (msgLevel.ordinal < level.ordinal) return
         
         sink.write(formatter.formatMessage(name, msgLevel, message))

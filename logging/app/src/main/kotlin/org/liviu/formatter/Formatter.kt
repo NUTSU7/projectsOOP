@@ -39,9 +39,11 @@ class Formatter(format: String) {
     constructor() : this(Companion.format) {
     }
     
-    public fun formatMessage(name: String, logLevel: LogLevel, message: String): String{
+    public fun formatMessage(name: String, logLevel: LogLevel, message: String, args: Array<out Any>? = null): String{
         val time = LocalTime.now().format(TIME_FORMAT)
         val randomMessage = RANDOM_MESSAGES.getValue(logLevel).random()
+        
+        val msg = if (args != null) fillArgs(message, args) else message
         
         return format.replace("%t", time)
             .replace("%l", logLevel.name)
@@ -49,4 +51,24 @@ class Formatter(format: String) {
             .replace("%m", message)
             .replace("%r", randomMessage)
     }
+
+    private fun fillArgs(message: String, args: Array<out Any>): String {
+        val sb = StringBuilder()
+        var next = 0
+        var i = 0
+        while (i < message.length) {
+            val c = message[i]
+            when {
+                c == '%' && i + 1 < message.length && message[i + 1] == '%' -> {
+                    sb.append('%'); i += 2; continue
+                }
+
+                c == '%' && next < args.size -> sb.append(args[next++])
+                else -> sb.append(c)
+            }
+            i++
+        }
+        while (next < args.size) sb.append(' ').append(args[next++])   // leftover args
+        return sb.toString()
+}
 }
