@@ -1,7 +1,10 @@
 package org.liviu.consolesink
 
-object ConsoleSink {
-    fun write(message: String) {
-        println(message)
+class ConsoleSink {
+    companion object {
+        fun write(message: String) {
+            println(message)
+        }
     }
+
 }
