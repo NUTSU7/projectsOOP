@@ -1,6 +1,6 @@
-package org.parenthesesvalidator
+package org.liviu.parenthesesvalidator
 import java.util.Stack
-import org.logger.*
+import org.liviu.logger.*
 
 class ParenthesesValidator(logLevel: LogLevel, format: String) {
     
@@ -9,8 +9,7 @@ class ParenthesesValidator(logLevel: LogLevel, format: String) {
     }
     
     init {
-        logger.setLevel(logLevel)
-        if(format.isNotEmpty()) logger.setFormat(format)
+        Logger.setLevel(logLevel)
     }
     
     
@@ -40,8 +39,8 @@ class ParenthesesValidator(logLevel: LogLevel, format: String) {
                     println(str)
                     print(" ".repeat(i))
                     println("^")
-                    errorMsg = "Found ')' but theres no matching '('"
-                    logger.warn(errorMsg)
+                    errorMsg = "Found ')' % % % % but theres no matching '(' at index %"
+                    logger.warn(errorMsg, 1,2,3,4,i)
                     break
                     //return false
                 } 

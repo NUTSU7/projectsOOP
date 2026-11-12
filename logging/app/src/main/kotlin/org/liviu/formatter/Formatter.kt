@@ -1,20 +1,13 @@
-package org.logger
+package org.liviu.formatter
+
+import org.liviu.logger.LogLevel
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import kotlin.random.Random
-import kotlin.random.nextInt
 
-
-enum class LogLevel {
-    TRACE, INFO, WARN, ERROR
-}
-
-class Logger(private val name: String) {
+class Formatter(format: String) {
     companion object {
-        var level = LogLevel.INFO
         var format = "[%t] [%l] %n: %m, %r"
         var TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss")
-        
         private val RANDOM_MESSAGES = mapOf(
             LogLevel.TRACE to listOf(
                 "Entering method",
@@ -37,36 +30,45 @@ class Logger(private val name: String) {
                 "Something went wrong"
             )
         )
-
     }
     
-    fun setLevel(newLevel: LogLevel) {
-        level = newLevel
-    }
-        
-    fun setFormat(newFormat: String) {
-        format = newFormat
+    init {
+        Companion.format = format
     }
     
-    public fun trace(message: String) = log(LogLevel.TRACE, message)
-    public fun info(message: String) = log(LogLevel.INFO, message)
-    public fun warn(message: String) = log(LogLevel.WARN, message)
-    public fun error(message: String) = log(LogLevel.ERROR, message)
-    
-    private fun log(msgLevel: LogLevel, message: String){
-        if (msgLevel.ordinal < level.ordinal) return
-        
-        println(formatMessage(format, msgLevel, message))
+    constructor() : this(Companion.format) {
     }
     
-    private fun formatMessage(format: String, logLevel: LogLevel, message: String): String{
+    public fun formatMessage(name: String, logLevel: LogLevel, message: String, args: Array<out Any>): String{
         val time = LocalTime.now().format(TIME_FORMAT)
         val randomMessage = RANDOM_MESSAGES.getValue(logLevel).random()
+        
+        val msg = if (args != null) fillArgs(message, args) else message
         
         return format.replace("%t", time)
             .replace("%l", logLevel.name)
             .replace("%n", name)
-            .replace("%m", message)
+            .replace("%m", msg)
             .replace("%r", randomMessage)
     }
+
+    private fun fillArgs(message: String, args: Array<out Any>): String {
+        val sb = StringBuilder()
+        var next = 0
+        var i = 0
+        while (i < message.length) {
+            val c = message[i]
+            when {
+                c == '%' && i + 1 < message.length && message[i + 1] == '%' -> {
+                    sb.append('%'); i += 2; continue
+                }
+
+                c == '%' && next < args.size -> sb.append(args[next++])
+                else -> sb.append(c)
+            }
+            i++
+        }
+        while (next < args.size) sb.append(' ').append(args[next++])   // leftover args
+        return sb.toString()
+}
 }
