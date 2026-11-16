@@ -5,6 +5,7 @@ package org.liviu
 import org.liviu.ai.aiclient.LmStudioClient
 import org.liviu.ai.individual.Agent
 import org.liviu.ai.individual.Memory
+import org.liviu.logger.Logger
 
 class App {
     val greeting: String
@@ -64,7 +65,8 @@ fun main() {
     
     //println(formatter.formatMessage("App", LogLevel.INFO, "This is an info message%n"))
     */
-    val agent = Agent("Pirate", "a grumpy pirate who answers in short sentences", Memory.tier2())
+    val client = LmStudioClient()
+    val agent = Agent("Pirate", "a grumpy pirate who answers in short sentences", Memory.tier2(), client)
     var input = readlnOrNull()
     while(input != null && input != "quit"){
         val response = agent.chat(input)

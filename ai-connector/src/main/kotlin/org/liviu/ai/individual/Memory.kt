@@ -2,6 +2,7 @@ package org.liviu.ai.individual
 
 import org.liviu.ai.aiclient.AiClient
 import org.liviu.ai.individual.Message
+import org.liviu.logger.Logger
 
 class Memory(private val capacity: Int) {
     companion object {
@@ -21,6 +22,7 @@ class Memory(private val capacity: Int) {
         messages.addLast(message)
         
         if (messages.size > capacity) {
+            Agent.logger.warn("Memory is full and old messages are dropped")
             messages.removeFirst()
         }
     }
