@@ -64,16 +64,16 @@ fun main() {
     //println(formatter.formatMessage("App", LogLevel.INFO, "This is an info message%n"))
     */
    var input = readlnOrNull()
-   while(input != null && input != "exit"){
-       aiTask(input.substringBefore(" "), input.substringAfter(" "))
+   while(input != null && input != "quit"){
+       aiTask(input)
        input = readlnOrNull()
    }
 }
 
-fun aiTask(name: String, personality: String) {
+fun aiTask(input: String) {
     val aiClient = LmStudioClient()
     
-    val agent = Agent(name, personality, aiClient)
-    val response = agent.chat()
+    val agent = Agent("Pirate", "a grumpy pirate who answers in short sentences", aiClient)
+    val response = agent.chat(input)
     println("AI Response: $response")
 }

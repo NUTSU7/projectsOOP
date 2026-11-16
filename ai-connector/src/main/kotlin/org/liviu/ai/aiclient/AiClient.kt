@@ -17,7 +17,7 @@ data class AiResponse(
 )
 
 interface AiClientInterface {
-    fun chat(messages: List<Message>): AiResponse
+    fun chat(messages: List<Message>, systemPrompt: String): AiResponse
 }
 
 abstract class AiClient(
@@ -29,7 +29,7 @@ abstract class AiClient(
 
     protected open val providerName: String = "AI Provider"
     
-    protected abstract fun formatInput(messages: List<Message>): String
+    protected abstract fun formatInput(messages: List<Message>, systemPrompt: String): String
     
     protected open fun sendRequest(body: String, url: String): Pair<HttpResponse<String>, Double> {
         val request = HttpRequest.newBuilder(URI.create(url))
@@ -56,45 +56,10 @@ abstract class AiClient(
         return Pair(response, seconds)
     }
     
-    protected open fun formatOutput(output: Pair<HttpResponse<String>, Double>): AiResponse {
-        val (response, seconds) = output
-        mapper = ObjectMapper()
+    protected abstract fun formatOutput(output: Pair<HttpResponse<String>, Double>): AiResponse
 
-        val root = try {
-            mapper.readTree(response.body())
-        } catch (e: IOException) {
-            throw AiConnectorException("Response is not valid JSON: ${response.body()}", e)
-        }
-        
-        val outputNode = root.path("output")
-        if (!outputNode.isArray) {
-            throw AiConnectorException("Unexpected response format (missing 'output' array): ${response.body()}")
-        }
-        
-        val message = outputNode
-        .filter { it.path("type").asText() == "message" && it.path("content").isTextual }
-        .map { it.path("content").asText() }
-        
-        if (message.isEmpty()) {
-            throw AiConnectorException("No message found in response: ${response.body()}")
-        }
-        
-        val usage = root.path("usage")
-        val result = AiResponse(
-            text = message.lastOrNull() ?: "",
-            promptTokens = usage.path("prompt_tokens").asInt(0),
-            completionTokens = usage.path("completion_tokens").asInt(0),
-            seconds = seconds
-        )
-        return result
-    }
+    abstract override fun chat(messages: List<Message>, systemPrompt: String): AiResponse
 
-    override fun chat(messages: List<Message>): AiResponse {
-        val body = formatInput(messages)
-        val url = "$baseUrl/api/v1/chat/"
-        val output = sendRequest(body, url)
-        return formatOutput(output)
-    }
 }
 
 class AiConnectorException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
