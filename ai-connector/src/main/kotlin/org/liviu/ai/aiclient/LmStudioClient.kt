@@ -25,7 +25,7 @@ class LmStudioClient(
         return mapper.writeValueAsString(
             mapOf(
                 "model" to model,
-                "input" to messages.joinToString("\n") { "Role:${it.role.wire} Message:${it.content}" },
+                "input" to messages.joinToString("; ") { "Role:${it.role.wire} Message:${it.content}" },
                 "system_prompt" to systemPrompt
             )
         )

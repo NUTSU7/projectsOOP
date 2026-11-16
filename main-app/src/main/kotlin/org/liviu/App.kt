@@ -63,17 +63,12 @@ fun main() {
     
     //println(formatter.formatMessage("App", LogLevel.INFO, "This is an info message%n"))
     */
-   var input = readlnOrNull()
-   while(input != null && input != "quit"){
-       aiTask(input)
-       input = readlnOrNull()
-   }
-}
-
-fun aiTask(input: String) {
     val aiClient = LmStudioClient()
-    
     val agent = Agent("Pirate", "a grumpy pirate who answers in short sentences", aiClient)
-    val response = agent.chat(input)
-    println("AI Response: $response")
+    var input = readlnOrNull()
+    while(input != null && input != "quit"){
+        val response = agent.chat(input)
+        println("AI Response: $response")
+        input = readlnOrNull()
+    }
 }
