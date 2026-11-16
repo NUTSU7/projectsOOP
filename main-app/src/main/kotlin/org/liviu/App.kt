@@ -5,6 +5,8 @@ package org.liviu
 import org.liviu.logger.*
 import org.liviu.parenthesesvalidator.ParenthesesValidator
 import org.liviu.formatter.Formatter
+import org.liviu.ai.*
+import org.liviu.ai.individual.Agent
 
 class App {
     val greeting: String
@@ -14,7 +16,7 @@ class App {
 }
 
 fun main() {
-    println(App().greeting)
+   /* println(App().greeting)
     
     //val logger = Logger("logger")
     //logger.info("info message")
@@ -63,4 +65,14 @@ fun main() {
     //val formatter = Formatter("[%t] [%l] %n: %m, %r")
     
     //println(formatter.formatMessage("App", LogLevel.INFO, "This is an info message%n"))
+    */
+   
+   aiTask()
+}
+
+fun aiTask(){
+    val aiClient = LmStudioClient()
+    val agent = Agent("Liviu", "friendly", aiClient)
+    val response = agent.chat()
+    println("AI Response: $response")
 }
