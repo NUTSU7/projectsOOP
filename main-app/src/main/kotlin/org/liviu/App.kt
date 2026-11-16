@@ -64,8 +64,7 @@ fun main() {
     
     //println(formatter.formatMessage("App", LogLevel.INFO, "This is an info message%n"))
     */
-    val aiClient = LmStudioClient()
-    val agent = Agent("Pirate", "a grumpy pirate who answers in short sentences", Memory.tier2(), aiClient)
+    val agent = Agent("Pirate", "a grumpy pirate who answers in short sentences", Memory.tier2())
     var input = readlnOrNull()
     while(input != null && input != "quit"){
         val response = agent.chat(input)
