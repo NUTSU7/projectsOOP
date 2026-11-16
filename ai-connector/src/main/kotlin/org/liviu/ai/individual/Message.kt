@@ -1,4 +1,4 @@
-package org.liviu.ai
+package org.liviu.ai.individual
 
 enum class Role(val wire: String) {
     SYSTEM("system"),

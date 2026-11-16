@@ -1,6 +1,7 @@
-package org.liviu.ai
+package org.liviu.ai.aiclient
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import org.liviu.ai.individual.Message
 import java.io.IOException
 import java.net.URI
 import java.net.http.HttpClient

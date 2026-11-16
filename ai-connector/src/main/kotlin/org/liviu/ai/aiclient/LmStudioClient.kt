@@ -1,12 +1,8 @@
-package org.liviu.ai
+package org.liviu.ai.aiclient
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import java.io.IOException
-import java.net.URI
+import org.liviu.ai.individual.Message
 import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
-import java.time.Duration
 
 class LmStudioClient(
     baseUrl: String = "http://127.0.0.1:1234",
@@ -20,7 +16,7 @@ class LmStudioClient(
         return mapper.writeValueAsString(
             mapOf(
                 "model" to model,
-                "input" to messages.joinToString(separator = "\n") { it.content}
+                "input" to messages.joinToString("\n") { "Role:${it.role.wire} Message:${it.content}" }
             )
         )
     }
