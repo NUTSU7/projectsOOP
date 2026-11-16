@@ -54,12 +54,12 @@ class LmStudioClient(
             throw AiConnectorException("No message found in response: ${response.body()}")
         }
 
-        val usage = root.path("usage")
+        val usage = root.path("stats")
         val result = AiResponse(
             text = message.lastOrNull() ?: "",
-            promptTokens = usage.path("prompt_tokens").asInt(0),
-            completionTokens = usage.path("completion_tokens").asInt(0),
-            seconds = seconds
+            inputTokens = usage.path("input_tokens").asInt(0),
+            outputTokens = usage.path("total_output_tokens").asInt(0),
+            tokensPerSecond = usage.path("tokens_per_second").asDouble(0.0)
         )
         return result
     }

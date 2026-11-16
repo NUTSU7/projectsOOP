@@ -31,9 +31,9 @@ class Agent(private val name: String, private val personality: String, private v
         }
         logger.trace("Request sent (${messages.size} messages)")
         
-        logger.info("\nPrompt tokens: ${aiResponse.promptTokens} \n" + 
-                "Completion tokens: ${aiResponse.completionTokens} \n" + 
-                "Tokens per second: ${aiResponse.completionTokens / aiResponse.seconds}")
+        logger.info("\nInput tokens: ${aiResponse.inputTokens} \n" + 
+                "Output tokens: ${aiResponse.outputTokens} \n" + 
+                "Tokens per second: ${aiResponse.tokensPerSecond}")
         
         memory.add(Message(role = Role.ASSISTANT, content = aiResponse.text))
         return aiResponse.text

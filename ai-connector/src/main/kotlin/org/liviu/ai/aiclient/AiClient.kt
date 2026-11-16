@@ -11,9 +11,9 @@ import java.time.Duration
 
 data class AiResponse(
     val text: String,
-    val promptTokens: Int,
-    val completionTokens: Int,
-    val seconds: Double
+    val inputTokens: Int,
+    val outputTokens: Int,
+    val tokensPerSecond: Double
 )
 
 interface AiClientInterface {
