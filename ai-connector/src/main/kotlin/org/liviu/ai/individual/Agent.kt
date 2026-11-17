@@ -19,6 +19,7 @@ class Agent(private val name: String, private val personality: String, private v
     private val systemPrompt: String = "Your name is $name and you are a $personality agent." + 
             """If you need a tool, answer ONLY with a JSON object, like:
             { "tool": "calculator", "input": "12 * 7" }
+            Available tools: get_time, get_date, calculator, roll_dice.
             If you do not need a tool, answer normally (NOT JSON)."""
     fun chat(input: String, role: Role): String {
         if(input.isEmpty()) {
