@@ -6,6 +6,7 @@ import org.liviu.ai.aiclient.LmStudioClient
 import org.liviu.ai.individual.Agent
 import org.liviu.ai.individual.Memory
 import org.liviu.logger.Logger
+import org.liviu.ai.individual.Role
 
 class App {
     val greeting: String
@@ -69,7 +70,7 @@ fun main() {
     val agent = Agent("Pirate", "a grumpy pirate who answers in short sentences", Memory.tier2(), client)
     var input = readlnOrNull()
     while(input != null && input != "quit"){
-        val response = agent.chat(input)
+        val response = agent.chat(input, Role.USER)
         println("AI Response: $response")
         input = readlnOrNull()
     }
