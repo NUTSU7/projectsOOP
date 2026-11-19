@@ -21,7 +21,6 @@ class LmStudioClient(
     }
 
     override fun formatInput(messages: List<Message>, systemPrompt: String): String {
-        mapper = ObjectMapper()
         return mapper.writeValueAsString(
             mapOf(
                 "model" to model,
@@ -33,7 +32,6 @@ class LmStudioClient(
 
     override fun formatOutput(output: Pair<HttpResponse<String>, Double>): AiResponse {
         val (response, seconds) = output
-        mapper = ObjectMapper()
 
         val root = try {
             mapper.readTree(response.body())

@@ -6,7 +6,8 @@ import org.liviu.ai.aiclient.LmStudioClient
 import org.liviu.logger.Logger
 import org.liviu.ai.aiclient.AiConnectorException
 import org.liviu.ai.individual.Toolbox
-
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.core.JsonProcessingException
 
 
 
@@ -14,6 +15,7 @@ class Agent(private val name: String, private val personality: String, private v
     companion object{
         val logger = Logger("logger")
         val toolbox = Toolbox()
+        private val mapper = ObjectMapper()
     }
     
     private val systemPrompt: String = "Your name is $name and you are a $personality agent." + 
@@ -52,7 +54,7 @@ class Agent(private val name: String, private val personality: String, private v
                 "Output tokens: ${aiResponse.outputTokens} \n" + 
                 "Tokens per second: ${aiResponse.tokensPerSecond}")
         
-        memory.add(Message(role = role, content = aiResponse.text))
+        memory.add(Message(role = Role.ASSISTANT, content = aiResponse.text))
         
         val (toolCall, toolInfo) = verifyToolCall(aiResponse.text)
         
@@ -64,12 +66,18 @@ class Agent(private val name: String, private val personality: String, private v
     }
     
     private fun verifyToolCall(text: String): Pair<Boolean, Pair<String, String>> {
-        if(text.contains("tool") && text.startsWith("{") && text.endsWith("}")){
-            val toolName = text.substringAfter("{").substringBefore("}")
-            val toolInput = text.substringAfter("}").trim()
-            return Pair(true, Pair(toolName, toolInput))
+        val start = text.indexOf('{')
+        val end = text.lastIndexOf('}')
+        if (start == -1 || end <= start) return Pair(false, Pair("", ""))
+
+        val node = try {
+            mapper.readTree(text.substring(start, end + 1))
+        } catch (e: JsonProcessingException) {
+            return Pair(false, Pair("", ""))
         }
-        return Pair(false, Pair("", ""))
+
+        if (!node.isObject || !node.has("tool")) return Pair(false, Pair("", ""))
+        return Pair(true, Pair(node.path("tool").asText(), node.path("input").asText("")))
     }
     
 }

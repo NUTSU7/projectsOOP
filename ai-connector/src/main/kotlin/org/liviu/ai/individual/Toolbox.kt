@@ -45,7 +45,7 @@ class Toolbox {
             "get_time" -> get_time()
             "get_date" -> get_date()
             "calculator" -> calculator(input)
-            "rooll_dice" -> roll_dice()
+            "roll_dice" -> roll_dice()
             else -> {
                 Agent.logger.error("Tool not found")
                 "Tool not found"

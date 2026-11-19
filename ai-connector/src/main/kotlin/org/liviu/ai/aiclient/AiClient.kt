@@ -16,17 +16,13 @@ data class AiResponse(
     val tokensPerSecond: Double
 )
 
-interface AiClientInterface {
-    fun chat(messages: List<Message>, systemPrompt: String): AiResponse
-}
-
 abstract class AiClient(
     protected var baseUrl: String,
     protected val model: String,
     protected val http: HttpClient,
-    protected var mapper: ObjectMapper = ObjectMapper()
-) : AiClientInterface {
-
+) {
+    protected val mapper: ObjectMapper = ObjectMapper()
+    
     protected open val providerName: String = "AI Provider"
     
     protected abstract fun formatInput(messages: List<Message>, systemPrompt: String): String
@@ -58,7 +54,7 @@ abstract class AiClient(
     
     protected abstract fun formatOutput(output: Pair<HttpResponse<String>, Double>): AiResponse
 
-    abstract override fun chat(messages: List<Message>, systemPrompt: String): AiResponse
+    abstract fun chat(messages: List<Message>, systemPrompt: String): AiResponse
 
 }
 
