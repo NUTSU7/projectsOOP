@@ -66,18 +66,19 @@ class Agent(private val name: String, private val personality: String, private v
     }
     
     private fun verifyToolCall(text: String): Pair<Boolean, Pair<String, String>> {
-        val start = text.indexOf('{')
-        val end = text.lastIndexOf('}')
-        if (start == -1 || end <= start) return Pair(false, Pair("", ""))
+        val trimmed = text.trim()
+        if (!trimmed.startsWith("{") || !trimmed.endsWith("}")) return Pair(false, Pair("", ""))
 
         val node = try {
-            mapper.readTree(text.substring(start, end + 1))
+            mapper.readTree(trimmed)
         } catch (e: JsonProcessingException) {
+            Agent.logger.error("Error parsing JSON: $e")
             return Pair(false, Pair("", ""))
         }
-
-        if (!node.isObject || !node.has("tool")) return Pair(false, Pair("", ""))
-        return Pair(true, Pair(node.path("tool").asText(), node.path("input").asText("")))
+        
+        val tool = node.path("tool").asText()
+        if (!Toolbox.isToolAvailable(tool)) return Pair(false, Pair("", ""))
+        return Pair(true, Pair(tool, node.path("input").asText("")))
     }
     
 }

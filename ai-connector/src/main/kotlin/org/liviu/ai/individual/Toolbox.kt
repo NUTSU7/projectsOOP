@@ -2,6 +2,14 @@ package org.liviu.ai.individual
 
 
 class Toolbox {
+    companion object {
+        private val toolSet = setOf("get_time", "get_date", "calculator", "roll_dice")
+        
+        fun isToolAvailable(toolName: String): Boolean {
+            return toolName in toolSet
+        }
+    }
+    
     private fun get_time(): String {
         val currentTime = java.time.LocalDateTime.now()
         return currentTime.toString()
